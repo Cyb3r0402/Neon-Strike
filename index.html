@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NEON STRIKE — A browser-based 3D first-person shooter. Walk, run, jump and blast waves of neon enemies in a sci-fi arena.">
+    <title>NEON STRIKE | 3D FPS</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ============  CANVAS  ============ -->
+<canvas id="game-canvas"></canvas>
+
+<!-- ============  CROSSHAIR  ============ -->
+<div id="crosshair">
+    <div class="ch-h"></div>
+    <div class="ch-v"></div>
+    <div class="ch-dot"></div>
+</div>
+
+<!-- ============  HUD  ============ -->
+<div id="hud">
+
+    <!-- Health -->
+    <div id="health-container">
+        <div id="health-label">HEALTH</div>
+        <div id="health-bar-bg"><div id="health-bar"></div></div>
+        <div id="health-value">100</div>
+    </div>
+
+    <!-- Ammo -->
+    <div id="ammo-container">
+        <div id="weapon-name">PISTOL</div>
+        <div id="ammo-current">15</div>
+        <div id="ammo-reserve">/90</div>
+        <div id="reload-hint">RELOAD [R]</div>
+    </div>
+
+    <!-- Wave / Score -->
+    <div id="wave-info">
+        <div id="wave-label">WAVE</div>
+        <div id="wave-number">1</div>
+        <div id="score-value">SCORE  0</div>
+    </div>
+
+    <!-- Enemy count -->
+    <div id="enemy-info">
+        <div id="enemy-label">ENEMIES</div>
+        <div id="enemy-count">0</div>
+    </div>
+
+    <!-- Controls hint (top-left) -->
+    <div id="controls-hint">
+        WASD · MOVE<br>
+        MOUSE · AIM<br>
+        LMB · FIRE<br>
+        Q · SWAP  R · RELOAD<br>
+        SPACE · JUMP  SHIFT · SPRINT
+    </div>
+
+    <!-- Damage overlay -->
+    <div id="damage-overlay"></div>
+
+    <!-- Wave banner -->
+    <div id="wave-banner">
+        <h2 id="banner-title">WAVE 1</h2>
+        <p  id="banner-sub">ELIMINATE ALL TARGETS</p>
+    </div>
+</div>
+
+<!-- ============  PAUSE  ============ -->
+<div id="pause-screen">
+    <h2>PAUSED</h2>
+    <p>PRESS ESC TO RESUME</p>
+</div>
+
+<!-- ============  MOBILE CONTROLS  ============ -->
+<div id="mobile-controls">
+    <div id="mobile-dpad">
+        <button class="mobile-btn" data-mobile-key="KeyW">W</button>
+        <button class="mobile-btn" data-mobile-key="KeyA">A</button>
+        <button class="mobile-btn" data-mobile-key="KeyS">S</button>
+        <button class="mobile-btn" data-mobile-key="KeyD">D</button>
+    </div>
+    <div id="mobile-actions">
+        <button class="mobile-btn action" id="fire-btn">FIRE</button>
+        <button class="mobile-btn action" id="jump-btn" data-mobile-key="Space">JUMP</button>
+        <button class="mobile-btn action" id="reload-btn">RELOAD</button>
+        <button class="mobile-btn action" id="swap-btn">SWAP</button>
+    </div>
+    <div id="weapon-picker">
+        <button class="weapon-btn" data-weapon="pistol">PISTOL</button>
+        <button class="weapon-btn" data-weapon="shotgun">SHOTGUN</button>
+        <button class="weapon-btn" data-weapon="rifle">RIFLE</button>
+    </div>
+</div>
+
+<!-- ============  MENU  ============ -->
+<div id="menu">
+    <h1 class="menu-title">NEON STRIKE</h1>
+    <p  class="menu-subtitle">SURVIVE THE WAVES</p>
+
+    <div class="menu-card">
+        <div class="controls-grid">
+            <div class="ctrl-item">
+                <span class="key">WASD</span>
+                <span class="ctrl-desc">MOVE</span>
+            </div>
+            <div class="ctrl-item">
+                <span class="key">MOUSE</span>
+                <span class="ctrl-desc">AIM / LOOK</span>
+            </div>
+            <div class="ctrl-item">
+                <span class="key">LMB</span>
+                <span class="ctrl-desc">SHOOT</span>
+            </div>
+            <div class="ctrl-item">
+                <span class="key">SHIFT</span>
+                <span class="ctrl-desc">SPRINT</span>
+            </div>
+            <div class="ctrl-item">
+                <span class="key">SPACE</span>
+                <span class="ctrl-desc">JUMP</span>
+            </div>
+            <div class="ctrl-item">
+                <span class="key">Q</span>
+                <span class="ctrl-desc">SWAP WEAPON</span>
+            </div>
+            <div class="ctrl-item">
+                <span class="key">R</span>
+                <span class="ctrl-desc">RELOAD</span>
+            </div>
+            <div class="ctrl-item">
+                <span class="key">ESC</span>
+                <span class="ctrl-desc">PAUSE</span>
+            </div>
+        </div>
+    </div>
+
+    <button id="start-btn">START GAME</button>
+</div>
+
+<!-- ============  GAME OVER  ============ -->
+<div id="game-over">
+    <h1>GAME OVER</h1>
+    <div id="final-stats">
+        <div>
+            <div class="stat-label">WAVE REACHED</div>
+            <div class="stat-value" id="go-wave">1</div>
+        </div>
+        <div>
+            <div class="stat-label">FINAL SCORE</div>
+            <div class="stat-value" id="go-score">0</div>
+        </div>
+        <div>
+            <div class="stat-label">KILLS</div>
+            <div class="stat-value" id="go-kills">0</div>
+        </div>
+    </div>
+    <button id="restart-btn">TRY AGAIN</button>
+</div>
+
+<!-- ============  THREE.JS + POST-PROCESSING  ============ -->
+<!-- Core Three.js r128 (global / non-module build) -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+
+<!-- Shaders required by EffectComposer / Bloom -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+
+<!-- Post-processing passes -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+
+<!-- ============  GAME SCRIPTS (order matters)  ============ -->
+<script src="js/audio.js"></script>
+<script src="js/world.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/hud.js"></script>
+<script src="js/enemies.js"></script>
+<script src="js/player.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
